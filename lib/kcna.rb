@@ -36,7 +36,7 @@ class KCNA
       article_code: "", article_type_list: "", news_type_code: "", show_what: "", mediaCode: "",
       lang: lang
     }
-    @client.post("http://kcna.kp/kcna.user.home.retrieveHomeInfoList.kcmsf", body: data)
+    @client.post("http://kcna.kp/kcna.user.home.retrieveHomeInfoList.kcmsf", body: data, follow_redirect: true)
   end
 
   private def fetch_article(article_id)
