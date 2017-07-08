@@ -41,7 +41,7 @@ class KCNA
 
   private def fetch_article(article_id)
     article_url = "http://kcna.kp/kcna.user.article.retrieveArticleInfoFromArticleCode.kcmsf"
-    data = { article_code: "AR0099775", kwContent: "" }
+    data = { article_code: article_id, kwContent: "" }
     @client.post(article_url, body: data, follow_redirect: true).body
   end
 
