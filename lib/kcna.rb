@@ -31,18 +31,31 @@ class KCNA
     end.sub(/(－－－|‐‐‐)$/, "")
   end
 
+  private def post(path, body, max_redirect = 3)
+    raise "Too many redirects" if max_redirect == 0
+
+    res = @client.post("http://kcna.kp#{path}", body: body)
+    if res.ok?
+      res
+    elsif res.redirect?
+      raise "Response error: #{res.status}" unless res.status == HTTP::Status::TEMPORARY_REDIRECT
+      post(path, body, max_redirect - 1)
+    else
+      raise "Response error: #{res.status}"
+    end
+  end
+
   def set_language(lang)
     data = {
       article_code: "", article_type_list: "", news_type_code: "", show_what: "", mediaCode: "",
       lang: lang
     }
-    @client.post("http://kcna.kp/kcna.user.home.retrieveHomeInfoList.kcmsf", body: data, follow_redirect: true)
+    post("/kcna.user.home.retrieveHomeInfoList.kcmsf", data)
   end
 
   private def fetch_article(article_id)
-    article_url = "http://kcna.kp/kcna.user.article.retrieveArticleInfoFromArticleCode.kcmsf"
     data = { article_code: article_id, kwContent: "" }
-    @client.post(article_url, body: data, follow_redirect: true).body
+    post("/kcna.user.article.retrieveArticleInfoFromArticleCode.kcmsf", data).body
   end
 
   def get_article(article_id)
