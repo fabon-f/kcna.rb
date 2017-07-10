@@ -7,6 +7,7 @@ Gem::Specification.new do |spec|
   spec.version = KCNA::VERSION
   spec.authors = ["Hinata"]
   spec.email = ["syobon.hinata.public@gmail.com"]
+  spec.license = "MIT"
 
   spec.summary = %q{A Ruby gem for kcna.kp(KCNA, Korean Central News Agency)}
   # spec.description = %q{TODO: Write a longer description or delete this line.}
