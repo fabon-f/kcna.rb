@@ -80,4 +80,32 @@ class KCNA
       movie_count: movie_count, photo_count: photo_count, music_count: music_count
     )
   end
+
+  private def fetch_article_list(start, news_type, from_date, to_date)
+    data = { page_start: start, kwDispTitle: "", keyword: "", newsTypeCode: news_type, articleTypeList: "", photoCount: 0, movieCount: 0, kwContent: "", fromDate: from_date, toDate: to_date }
+    post("/kcna.user.article.retrieveArticleListForPage.kcmsf", data).body
+  end
+
+  def get_article_list(start = 0, news_type: "", from_date: "", to_date: "")
+    doc = REXML::Document.new(fetch_article_list(start, news_type, from_date, to_date))
+    article_ids = REXML::XPath.match(doc, "//articleCode").map(&:text)
+    disp_titles = REXML::XPath.match(doc, "//dispTitle").map { |node| normalize_text(node.text) }
+    main_titles = REXML::XPath.match(doc, "//mainTitle").map { |node| normalize_text(node.text) }
+    sub_titles = REXML::XPath.match(doc, "//subTitle").map { |node| normalize_text(node.text) }
+    dates = REXML::XPath.match(doc, "//sendInfo").map { |node| Date.parse(node.text) }
+    movie_counts = REXML::XPath.match(doc, "//fMovieCnt").map { |node| node.text.to_i }
+    music_counts = REXML::XPath.match(doc, "//fMusicCnt").map { |node| node.text.to_i }
+    photo_counts = REXML::XPath.match(doc, "//fPhotoCnt").map { |node| node.text.to_i }
+
+    article_ids.zip(
+      disp_titles, main_titles, sub_titles, dates,
+      movie_counts, music_counts, photo_counts
+    ).map do |id, disp, main, sub, date, movie, music, photo|
+      Article.new(
+        id: id, date: date,
+        display_title: disp, main_title: main, sub_title: sub,
+        movie_count: movie, music_count: music, photo_count: photo
+      )
+    end
+  end
 end
