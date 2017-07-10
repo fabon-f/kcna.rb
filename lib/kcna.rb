@@ -92,7 +92,7 @@ class KCNA
     disp_titles = REXML::XPath.match(doc, "//dispTitle").map { |node| normalize_text(node.text) }
     main_titles = REXML::XPath.match(doc, "//mainTitle").map { |node| normalize_text(node.text) }
     sub_titles = REXML::XPath.match(doc, "//subTitle").map { |node| normalize_text(node.text) }
-    dates = REXML::XPath.match(doc, "//sendInfo").map { |node| Date.parse(node.text) }
+    dates = REXML::XPath.match(doc, "//sendInfo").map(&:text)
     movie_counts = REXML::XPath.match(doc, "//fMovieCnt").map { |node| node.text.to_i }
     music_counts = REXML::XPath.match(doc, "//fMusicCnt").map { |node| node.text.to_i }
     photo_counts = REXML::XPath.match(doc, "//fPhotoCnt").map { |node| node.text.to_i }
@@ -101,8 +101,9 @@ class KCNA
       disp_titles, main_titles, sub_titles, dates,
       movie_counts, music_counts, photo_counts
     ).map do |id, disp, main, sub, date, movie, music, photo|
+      date = "2015-04-02" if id == "AR0060168"
       Article.new(
-        id: id, date: date,
+        id: id, date: Date.parse(date),
         display_title: disp, main_title: main, sub_title: sub,
         movie_count: movie, music_count: music, photo_count: photo
       )
