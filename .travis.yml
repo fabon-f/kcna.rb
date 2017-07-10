@@ -4,3 +4,10 @@ rvm:
   - 2.2.0
   - 2.4.0
 before_install: gem install bundler -v 1.15.1
+deploy:
+  provider: rubygems
+  api_key:
+    secure: F5vH20pJfj7beutCPvr0qJQ4An46+GqF4IimizAkcpWPyVnbwiLN0Ngph0ifjBRzx3vByHEzvEqg2abS8tlm8ZZJoSOywHKAtXM8X1UcAJnvTf6VOjGTWMHZcUmp6cuGLYbqvV5hf0Cfji2R+Co1x1pDRnT/C9J9Ew7TSQ2/cFhEdoOrxCwvUmeSJ4RWIjdu8XjL728AVvA9npXp7fFC4TIWWW3fZkRJZD2BGM5lBhmlmfCUSbFiSGJVKsGtHtqZwYBdiXv74Ujen0G8PMQB/1oJC/NH9IiYCnNFz4WxWMFT/ufp/PuuqKC9Bquo40XJT8E82Akg0BkmeEl38NJ+lW0dZyrt4MrJ6UF5zOh/rx1oBdbmF11ZGLu+fpmituWqhTMWFAM7bPb0m+3jS3bkbF8IravRo09CY3NpVDOkJH+5g8HLS4jDuelQw+SZ06CUbGwv0lZgIcn6fPrJqQBgwoW7R6HDOsjcga/UMvGpQ9NArAvUp2OnfFUqOcrqgUANsS7evFYoMka8GYSlUkEPu0fcOppzrHONVIgtj9vG3DvbUPiK8jwx+JfQNiSVhRgyCUQTENW5UCxRZr3Q4Jeaek+PIvG1O+psqi/K3yM/nlYP8Zee0PC8X5re1ZTctJO3crCpBNxTBDhwuBjIQMjQbz+mS5ahnijhHBdXxTmSxCo=
+  on:
+    tags: true
+  gem: kcna
