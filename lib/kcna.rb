@@ -74,7 +74,7 @@ class KCNA
     music_count = REXML::XPath.first(doc, "//fMusicCnt").text.to_i
 
     Article.new(
-      id: article_id, content: content,
+      article_id, content: content,
       date: date,
       main_title: main_title, sub_title: sub_title, display_title: display_title,
       movie_count: movie_count, photo_count: photo_count, music_count: music_count
@@ -103,7 +103,7 @@ class KCNA
     ).map do |id, disp, main, sub, date, movie, music, photo|
       date = "2015-04-02" if id == "AR0060168"
       Article.new(
-        id: id, date: Date.parse(date),
+        id, date: Date.parse(date),
         display_title: disp, main_title: main, sub_title: sub,
         movie_count: movie, music_count: music, photo_count: photo
       )

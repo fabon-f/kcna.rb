@@ -14,7 +14,8 @@ class KCNA::Article
   attr_reader_hash :photo_count, 0
   attr_reader_hash :music_count, 0
 
-  def initialize(id:, **attrs)
+  def initialize(id, **attrs)
+    raise "id is not a string" unless id.kind_of?(String)
     @id = id
     @attrs = attrs
   end
