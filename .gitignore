@@ -2,3 +2,5 @@
 vendor/bundle
 vendor/bin
 .envrc
+.yardoc
+doc

@@ -4,6 +4,7 @@ require "httpclient"
 require "date"
 require "rexml/document"
 
+# KCNA provides several methods for accessing KCNA resource.
 class KCNA
   KO = "kor"
   EN = "eng"
@@ -16,6 +17,8 @@ class KCNA
     @client = HTTPClient.new
   end
 
+  # Processes raw article content.
+  # This method strips HTML tags and trailing unnecessary strings.
   def normalize_text(content)
     great_leader_pattern = /<nobr><strong><font.*>(.*)<\/font><\/strong><\/nobr>/
     patterns = ["\n", "<br>", "&nbsp;", great_leader_pattern]
@@ -45,11 +48,14 @@ class KCNA
     end
   end
 
+  # Sets the response language by sending request to kcna.kp.
+  # @param lang [String] the language code. One of +KCNA::KO+, +KCNA::EN+, +KCNA::ZH+, +KCNA::RU+, +KCNA::ES+, and +KCNA::JA+.
   def set_language(lang)
     data = {
       article_code: "", article_type_list: "", news_type_code: "", show_what: "", mediaCode: "",
       lang: lang
     }
+    # Cookie is considered automatically by httpclient
     post("/kcna.user.home.retrieveHomeInfoList.kcmsf", data)
   end
 
@@ -58,6 +64,11 @@ class KCNA
     post("/kcna.user.article.retrieveArticleInfoFromArticleCode.kcmsf", data).body
   end
 
+  # Fetches the article by article ID.
+  # The content of the article is already processed by {#normalize_text},
+  # so you don't have to do it by youself.
+  # @param article_id [String] article ID.
+  # @return [KCNA::Article] the article data
   def get_article(article_id)
     doc = REXML::Document.new(fetch_article(article_id))
     container = REXML::XPath.first(doc, "//NData")
@@ -86,6 +97,9 @@ class KCNA
     post("/kcna.user.article.retrieveArticleListForPage.kcmsf", data).body
   end
 
+  # Fetches a list of articles.
+  # @param start [Integer] Index number for pagination.
+  # @return [Array<KCNA::Article>] article list
   def get_article_list(start = 0, news_type: "", from_date: "", to_date: "")
     doc = REXML::Document.new(fetch_article_list(start, news_type, from_date, to_date))
     article_ids = REXML::XPath.match(doc, "//articleCode").map(&:text)
