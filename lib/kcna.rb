@@ -3,6 +3,7 @@ require "kcna/article"
 require "httpclient"
 require "date"
 require "rexml/document"
+require "oga"
 
 # KCNA provides several methods for accessing KCNA resource.
 class KCNA
@@ -17,21 +18,22 @@ class KCNA
     @client = HTTPClient.new
   end
 
+  private def strip_html(string)
+    Oga.parse_html(string).children.map(&:text).join
+  end
+
   # Processes raw article content.
   # This method strips HTML tags and trailing unnecessary strings.
   def normalize_text(content)
-    great_leader_pattern = /<nobr><strong><font.*>(.*)<\/font><\/strong><\/nobr>/
-    patterns = ["\n", "<br>", "&nbsp;", great_leader_pattern]
-    content.gsub(Regexp.union(patterns)) do |match|
+    replaced_content = content.gsub(/\n|<br>|&nbsp;/) do |match|
       case match
       when "\n", "&nbsp;"
         ""
       when "<br>"
         "\n"
-      when great_leader_pattern
-        $1
       end
     end.sub(/(－－－|‐‐‐)$/, "")
+    strip_html(replaced_content)
   end
 
   private def post(path, body, max_redirect = 3)
