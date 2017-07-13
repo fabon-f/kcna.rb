@@ -52,7 +52,7 @@ EXPECTED
   end
 
   def test_get_article_list
-    articles = kcna.get_article_list(0, to_date: "2017-07-07")
+    articles = kcna.get_article_list(0, to_date: Date.parse("2017-07-07"))
     assert_equal 10, articles.size
     assert_equal "AR0099896", articles[0].id
     assert Date.parse("2017-07-07") === articles[0].date, "Expected: 2017-07-07, Actual: #{articles[0].date}"

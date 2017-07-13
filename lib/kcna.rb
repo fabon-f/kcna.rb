@@ -101,8 +101,14 @@ class KCNA
 
   # Fetches a list of articles.
   # @param start [Integer] Index number for pagination.
+  # @param news_type [String] news type.
+  # @param from_date [Date, String] This method search articles after this date.
+  # @param to_date [Date, String] This method search articles before this date.
   # @return [Array<KCNA::Article>] article list
   def get_article_list(start = 0, news_type: "", from_date: "", to_date: "")
+    from_date = from_date.to_s unless from_date.kind_of?(String)
+    to_date = to_date.to_s unless to_date.kind_of?(String)
+
     doc = REXML::Document.new(fetch_article_list(start, news_type, from_date, to_date))
     article_ids = REXML::XPath.match(doc, "//articleCode").map(&:text)
     disp_titles = REXML::XPath.match(doc, "//dispTitle").map { |node| normalize_text(node.text) }
