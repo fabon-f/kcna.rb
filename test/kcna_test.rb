@@ -12,9 +12,15 @@ unless ENV["DISABLE_HTTP_MOCK"]
       File.read(xml_path)
     end
 
-    private def fetch_article_list(start, news_type, from_date, to_date)
+    private def fetch_article_list(start, news_type, from_date, to_date, title_keyword, content_keyword)
       if start == 0 && news_type == "" && from_date == "" && to_date == "2017-07-07"
-        File.read(File.expand_path("../fixture/articles1.xml", __FILE__))
+        if title_keyword == "" && content_keyword == ""
+          File.read(File.expand_path("../fixture/articles1.xml", __FILE__))
+        elsif title_keyword == "労働新聞" && content_keyword == ""
+          File.read(File.expand_path("../fixture/articles2.xml", __FILE__))
+        else
+          raise "Unknown arguments"
+        end
       elsif start == 103000
         File.read(File.expand_path("../fixture/articles_empty.xml", __FILE__))
       else
@@ -61,6 +67,11 @@ EXPECTED
     assert_equal 1, articles[0].movie_count
     assert_equal 0, articles[0].music_count
     assert_equal 29, articles[0].photo_count
+  end
+
+  def test_get_article_list_with_keyword
+    articles = kcna.get_article_list(0, to_date: Date.parse("2017-07-07"), title_keyword: "労働新聞")
+    assert_equal "「労働新聞」 朝鮮は米国との対決戦で勝利する", articles[0].main_title
   end
 
   def test_get_article_list_with_empty_result

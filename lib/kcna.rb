@@ -94,8 +94,8 @@ class KCNA
     )
   end
 
-  private def fetch_article_list(start, news_type, from_date, to_date)
-    data = { page_start: start, kwDispTitle: "", keyword: "", newsTypeCode: news_type, articleTypeList: "", photoCount: 0, movieCount: 0, kwContent: "", fromDate: from_date, toDate: to_date }
+  private def fetch_article_list(start, news_type, from_date, to_date, title_keyword, content_keyword)
+    data = { page_start: start, kwDispTitle: title_keyword, keyword: "", newsTypeCode: news_type, articleTypeList: "", photoCount: 0, movieCount: 0, kwContent: content_keyword, fromDate: from_date, toDate: to_date }
     post("/kcna.user.article.retrieveArticleListForPage.kcmsf", data).body
   end
 
@@ -104,12 +104,14 @@ class KCNA
   # @param news_type [String] news type.
   # @param from_date [Date, String] This method search articles after this date.
   # @param to_date [Date, String] This method search articles before this date.
+  # @param title_keyword [String] search keyword for title.
+  # @param content_keyword [String] keyword for full-text search of the articles.
   # @return [Array<KCNA::Article>] article list
-  def get_article_list(start = 0, news_type: "", from_date: "", to_date: "")
+  def get_article_list(start = 0, news_type: "", from_date: "", to_date: "", title_keyword: "", content_keyword: "")
     from_date = from_date.to_s unless from_date.kind_of?(String)
     to_date = to_date.to_s unless to_date.kind_of?(String)
 
-    doc = REXML::Document.new(fetch_article_list(start, news_type, from_date, to_date))
+    doc = REXML::Document.new(fetch_article_list(start, news_type, from_date, to_date, title_keyword, content_keyword))
     article_ids = REXML::XPath.match(doc, "//articleCode").map(&:text)
     disp_titles = REXML::XPath.match(doc, "//dispTitle").map { |node| normalize_text(node.text) }
     main_titles = REXML::XPath.match(doc, "//mainTitle").map { |node| normalize_text(node.text) }
