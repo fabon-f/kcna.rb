@@ -3,7 +3,7 @@ class KCNA::Article
   # @return [String] ID of the article
   attr_reader :id
 
-  @attribute_keys = []
+  @attribute_keys = [:id]
 
   def self.attr_reader_hash(key, default = nil)
     @attribute_keys.push(key)

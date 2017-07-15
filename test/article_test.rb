@@ -29,6 +29,6 @@ class ArticleTest < Minitest::Test
   def test_to_h
     content = "抗日の血戦万里 日帝を打ち破り、三千里の我が国を取り戻された首領様"
     article = KCNA::Article.new("AR114514", content: content)
-    assert_equal ({ date: nil, content: content, main_title: nil, sub_title: nil, display_title: nil, movie_count: 0, photo_count: 0, music_count: 0 }), article.to_h
+    assert_equal ({ id: "AR114514", date: nil, content: content, main_title: nil, sub_title: nil, display_title: nil, movie_count: 0, photo_count: 0, music_count: 0 }), article.to_h
   end
 end
