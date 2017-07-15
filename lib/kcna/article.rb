@@ -22,7 +22,7 @@ class KCNA::Article
   attr_reader_hash :main_title
   # @!attribute [r]
   # @return [String] subtitle of the article
-  attr_reader_hash :sub_title, ""
+  attr_reader_hash :sub_title
   # @!attribute [r]
   # @return [String]
   attr_reader_hash :display_title
