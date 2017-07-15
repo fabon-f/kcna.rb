@@ -3,7 +3,10 @@ class KCNA::Article
   # @return [String] ID of the article
   attr_reader :id
 
+  @attribute_keys = []
+
   def self.attr_reader_hash(key, default = nil)
+    @attribute_keys.push(key)
     define_method(key, -> { @attrs[key].nil? ? default : @attrs[key] })
   end
   private_class_method :attr_reader_hash
@@ -46,5 +49,11 @@ class KCNA::Article
     raise "id is not a string" unless id.kind_of?(String)
     @id = id
     @attrs = attrs
+  end
+
+  # Convert the article to a hash table.
+  # @return [Hash]
+  def to_h
+    self.class.instance_variable_get(:@attribute_keys).map { |k| [k, self.send(k)] }.to_h
   end
 end
