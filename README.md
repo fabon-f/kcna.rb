@@ -25,7 +25,7 @@ kcna.get_article_list.each do |article|
 end
 ```
 
-See also [RubyDoc](http://www.rubydoc.info/github/hinamiyagk/kcna.rb/master).
+See also [RubyDoc](http://www.rubydoc.info/gems/kcna).
 
 ## License
 
