@@ -32,7 +32,7 @@ class KCNA
       when "<br>"
         "\n"
       end
-    end.sub(/(－－－|‐‐‐)$/, "")
+    end.sub(/\s*(－－－|‐‐‐|―――)\s*\z/, "")
     strip_html(replaced_content)
   end
 

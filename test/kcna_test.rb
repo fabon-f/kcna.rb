@@ -78,4 +78,8 @@ EXPECTED
     articles = kcna.get_article_list(103000) # Index Librorum Prohibitorum > KCNA
     assert_equal 0, articles.size
   end
+
+  def test_normalize_text
+    assert_equal "a.", kcna.normalize_text("a. －－－\n&nbsp;&nbsp;&nbsp;&nbsp;")
+  end
 end
