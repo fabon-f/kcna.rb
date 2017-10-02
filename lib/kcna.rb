@@ -39,7 +39,7 @@ class KCNA
   private def post(path, body, max_redirect = 3)
     raise "Too many redirects" if max_redirect == 0
 
-    res = @client.post("http://kcna.kp#{path}", body: body)
+    res = @client.post("http://kcna.kp#{path}", body: body, header: { "Connection" => "Keep-Alive" })
     if res.ok?
       res
     elsif res.redirect?
