@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    kcna (0.2.0)
+    kcna (0.3.0)
       httpclient (~> 2.8)
       oga (~> 2.10)
 
@@ -40,4 +40,4 @@ DEPENDENCIES
   yard
 
 BUNDLED WITH
-   1.15.1
+   1.15.4
